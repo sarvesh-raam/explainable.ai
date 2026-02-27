@@ -24,23 +24,22 @@ def run_shap_analysis():
 
     print("Models loaded. Starting SHAP analysis...")
 
-    # --- SECTION A: Random Forest (TreeExplainer) ---
+    # --- SECTION A: Random Forest (Global) ---
     print("\n[1/3] Analyzing Random Forest (Global)...")
-    # TreeExplainer is optimized for fast calculation on tree-based models
-    explainer_rf = shap.TreeExplainer(rf_model)
-    shap_values_rf = explainer_rf.shap_values(X_test)
+    # Using the modern Explainer API for more robust plotting
+    explainer_rf = shap.Explainer(rf_model, X_test)
+    shap_values_rf = explainer_rf(X_test, check_additivity=False)
 
-    # Summary Plot (Global Importance)
+    # Summary Plot (Global Importance) - using Beeswarm
     plt.figure(figsize=(10, 6))
-    # Note: for binary classification in some versions of SHAP, shap_values might be a list. 
-    # Usually index 1 is for the 'positive' class.
-    if isinstance(shap_values_rf, list):
-        shap_vals_to_plot = shap_values_rf[1]
+    # For binary classification, we use class 1 (Positive)
+    if len(shap_values_rf.shape) == 3: # (N, features, 2)
+        shap_vals_to_plot = shap_values_rf[:, :, 1]
     else:
         shap_vals_to_plot = shap_values_rf
 
-    shap.summary_plot(shap_vals_to_plot, X_test, show=False)
-    plt.title("SHAP Feature Importance (Random Forest)")
+    shap.plots.beeswarm(shap_vals_to_plot, show=False)
+    plt.title("SHAP Global Feature Importance (Random Forest)")
     plt.savefig(os.path.join(plots_dir, 'rf_summary_plot.png'), bbox_inches='tight')
     plt.close()
 
