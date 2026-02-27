@@ -59,7 +59,7 @@ Explainable-AI/
 
 ## 🤝 Collaborators
 
-| <a href="https://github.com/sarvesh-raam"><img src="https://github.com/sarvesh-raam.png" width="120px;" alt=""/></a> | <a href="https://github.com/Vigneshhhhhhhhhh"><img src="https://github.com/Vigneshhhhhhhhhh.png" width="120px;" alt=""/></a> |
+| <a href="https://github.com/sarvesh-raam"><img src="https://github.com/sarvesh-raam.png" width="120px;" style="border-radius: 50%;" alt=""/></a> | <a href="https://github.com/Vigneshhhhhhhhhh"><img src="https://github.com/Vigneshhhhhhhhhh.png" width="120px;" style="border-radius: 50%;" alt=""/></a> |
 | :---: | :---: |
 | **[sarvesh-raam](https://github.com/sarvesh-raam)** | **[Vigneshhhhhhhhhh](https://github.com/Vigneshhhhhhhhhh)** |
 
