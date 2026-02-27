@@ -58,12 +58,15 @@ Explainable-AI/
 ---
 
 ## 🤝 Collaborators
-This research is a collaborative effort between:
 
-| Name | Role | Profile |
-| :--- | :--- | :--- |
-| **Sarvesh Raam** | Lead Researcher | [@sarvesh-raam](https://github.com/sarvesh-raam) |
-| **Vignesh** | Research Collaborator | [@Vigneshhhhhhhhhh](https://github.com/Vigneshhhhhhhhhh) |
+<p align="left">
+<a href="https://github.com/sarvesh-raam">
+  <img src="https://github.com/sarvesh-raam.png" width="100px" style="border-radius: 50%;" alt="Sarvesh Raam"/>
+</a>
+<a href="https://github.com/Vigneshhhhhhhhhh">
+  <img src="https://github.com/Vigneshhhhhhhhhh.png" width="100px" style="border-radius: 50%;" alt="Vignesh"/>
+</a>
+</p>
 
 ---
 
