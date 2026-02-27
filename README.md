@@ -1,26 +1,26 @@
-# 🏥 Explainable AI (XAI) in Healthcare
-### *Balancing Accuracy and Interpretability: A Post-hoc Framework for Structured Healthcare Data*
+# 🤖 Explainable AI (XAI) Framework
+### *Balancing Accuracy and Interpretability: A Post-hoc Framework for Structured Data Analysis*
 
 ![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)
 ![SHAP](https://img.shields.io/badge/SHAP-Black?style=for-the-badge&logo=expert-systems&logoColor=white)
-![Healthcare](https://img.shields.io/badge/Focus-Healthcare-red?style=for-the-badge)
+![XAI](https://img.shields.io/badge/Focus-Explainability-blue?style=for-the-badge)
 
 ---
 
 ## 🎯 Project Overview
-This research project investigates the reliability, stability, and clinical utility of post-hoc explainability methods (**SHAP** and **LIME**) when applied to black-box machine learning models in healthcare. We aim to bridge the gap between high-performance "black-box" models and the transparency required for clinical decision-making.
+This research project investigates the reliability, stability, and utility of post-hoc explainability methods (**SHAP** and **LIME**) when applied to black-box machine learning models. We aim to bridge the gap between high-performance "black-box" models and the transparency required for critical decision-making in high-stakes environments.
 
 ### 🧪 Central Research Question
-> *"Can post-hoc explainability methods produce faithful, stable, and clinically useful explanations for black-box healthcare models—while maintaining high predictive performance?"*
+> *"Can post-hoc explainability methods produce faithful, stable, and useful explanations for black-box models—while maintaining high predictive performance across diverse structured datasets?"*
 
 ---
 
 ## 🔬 Research Objectives
-*   **Empirical Comparison:** Evaluating the performance of Logistic Regression, Random Forest, and Gradient Boosting.
+*   **Empirical Comparison:** Evaluating the performance of Linear Models (Logistic Regression) vs. Ensemble Methods (Random Forest, Gradient Boosting).
 *   **XAI Evaluation:** Comparing SHAP (Global & Local) vs. LIME (Local) explanations.
 *   **Stability Analysis:** Measuring the robustness of explanations against data perturbations (Gaussian noise).
-*   **Consistency Check:** Quantifying the agreement between different explanation methods.
+*   **Consistency Check:** Quantifying the agreement between different explanation methods to ensure trustworthy AI.
 
 ---
 
@@ -28,7 +28,7 @@ This research project investigates the reliability, stability, and clinical util
 
 | Phase | Title | Status | Description |
 | :--- | :--- | :--- | :--- |
-| **Phase 1** | **Dataset & Preprocessing** | 🟡 In Progress | Cleaning and engineering UCI Heart Disease & Adult Income datasets. |
+| **Phase 1** | **Dataset & Preprocessing** | 🟡 In Progress | Cleaning and engineering diverse structured datasets (e.g., UCI Repository). |
 | **Phase 2** | **Model Training** | ⚪ Pending | Building predictive engines using ensemble and linear methods. |
 | **Phase 3** | **SHAP Analysis** | ⚪ Pending | Global and local feature driver identification. |
 | **Phase 4** | **LIME Analysis** | ⚪ Pending | Local instance analysis and consistency comparisons. |
@@ -48,7 +48,7 @@ This research project investigates the reliability, stability, and clinical util
 ## 📂 Directory Structure
 ```bash
 Explainable-AI/
-├── data/               # Raw and processed healthcare datasets
+├── data/               # Raw and processed datasets
 ├── src/                # Python source code for preprocessing & modeling
 ├── notebooks/          # Experimental analysis and Jupyter Visualizations
 ├── results/            # Research plots, tables, and findings
