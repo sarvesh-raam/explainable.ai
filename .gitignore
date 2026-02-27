@@ -61,7 +61,7 @@ venv.bak/
 
 # Project-specific
 data/processed/
-results/
+results/models/
 !results/plots/
 .ipynb_checkpoints/
 .vscode/
