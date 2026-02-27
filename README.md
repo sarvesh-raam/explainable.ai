@@ -31,7 +31,7 @@ This research project investigates the reliability, stability, and utility of po
 | **Phase 1** | **Dataset & Preprocessing** | ✅ Completed | Cleaning and engineering diverse structured datasets (e.g., UCI Repository). |
 | **Phase 2** | **Model Training** | ✅ Completed | Building predictive engines using ensemble and linear methods. |
 | **Phase 3** | **SHAP Analysis** | ✅ Completed | Global and local feature driver identification. |
-| **Phase 4** | **LIME Analysis** | ⚪ Pending | Local instance analysis and consistency comparisons. |
+| **Phase 4** | **LIME Analysis** | ✅ Completed | Local instance analysis and consistency comparisons. |
 | **Phase 5** | **Stability Testing** | ⚪ Pending | Quantifying the trustworthiness of explanations for publication. |
 
 ---
