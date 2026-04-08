@@ -1,6 +1,8 @@
 # 🤖 Explainable AI (XAI) Framework
 ### *Balancing Accuracy and Interpretability: A Post-hoc Framework for Structured Data Analysis*
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sarvesh-raam/explainable.ai/blob/main/Explainable_AI_Research_Framework.ipynb)
+
 ![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)
 ![SHAP](https://img.shields.io/badge/SHAP-Black?style=for-the-badge&logo=expert-systems&logoColor=white)
@@ -65,7 +67,7 @@ Explainable-AI/
 
 | <a href="https://github.com/sarvesh-raam"><img src="https://github.com/sarvesh-raam.png" width="120px;" style="border-radius: 50%;" alt=""/></a> | <a href="https://github.com/Vigneshhhhhhhhhh"><img src="https://github.com/Vigneshhhhhhhhhh.png" width="120px;" style="border-radius: 50%;" alt=""/></a> |
 | :---: | :---: |
-| **[sarvesh-raam](https://github.com/sarvesh-raam)** | **[Vigneshhhhhhhhhh](https://github.com/Vigneshhhhhhhhhh)** |
+| **[sarvesh-raam](https://github.com/sarvesh-raam)** | **[Vignesh (Vicky)](https://github.com/Vigneshhhhhhhhhh)** |
 
 ---
 

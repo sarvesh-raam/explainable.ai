@@ -20,9 +20,11 @@ def run_text_xai_demo():
             "SEVERE CHEST PAIN AND DIZZINESS", "URGENT HEART ATTACK SYMPTOMS", "I CANNOT BREATHE",
             "Just a normal checkup", "My knee hurts after walking", "I feel fine today",
             "SUDDEN PARALYSIS ON LEFT SIDE", "CRUSHING PRESSURE IN CHEST", "My foot is sore",
-            "My stomach feels a bit weird", "Extreme difficulty in breathing", "Vision is blurry and head is spinning"
+            "My stomach feels a bit weird", "Extreme difficulty in breathing", "Vision is blurry and head is spinning",
+            "Minor cough and cold", "Slight fever and body pain", "Intense pressure in my head",
+            "I feel very weak and tired", "Sharp pain in my chest when breathing"
         ],
-        'label': [0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1]
+        'label': [0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1]
     }
     df = pd.DataFrame(data)
 
