@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>explainable.ai | Intelligence for Everyone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #212121;
+      --sidebar: #171717;
+      --card: #2f2f2f;
+      --border: rgba(255,255,255,0.1);
+      --accent: #10a37f; /* ChatGPT Green */
+      --text: #ececec;
+      --text-muted: #b4b4b4;
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* ── Sidebar ───────────────────────────────────────────────────── */
+    aside.sidebar {
+      width: 260px;
+      background: var(--sidebar);
+      display: flex;
+      flex-direction: column;
+      padding: 0.8rem;
+      border-right: 1px solid var(--border);
+    }
+    .new-chat {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      margin-bottom: 2rem;
+      transition: background 0.2s;
+    }
+    .new-chat:hover { background: rgba(255,255,255,0.05); }
+    .history-item {
+      padding: 0.75rem;
+      border-radius: var(--radius);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .history-item:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+    .sidebar-footer { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--text-dim); }
+
+    /* ── Main Chat Area ───────────────────────────────────────────── */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    header {
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .branding { font-weight: 700; font-size: 1.1rem; letter-spacing: -0.01em; }
+    .branding span { color: var(--accent); opacity: 0.8; }
+
+    #chatViewport {
+      flex: 1;
+      overflow-y: auto;
+      padding-bottom: 5rem;
+    }
+    .chat-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding: 2rem 1rem;
+    }
+
+    .msg {
+      display: flex;
+      gap: 1.5rem;
+      line-height: 1.6;
+      font-size: 1rem;
+      animation: fadeIn 0.3s ease-out;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+    .msg.system { align-self: flex-start; flex-direction: row; }
+    .msg.user { align-self: flex-end; flex-direction: row-reverse; }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 0.75rem;
+      font-weight: 800;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .msg.system .avatar { background: var(--accent); color: white; }
+    .msg.user .avatar { background: #5436da; color: white; }
+
+    .msg-content { 
+      flex: 1; 
+      max-width: fit-content;
+      background: var(--card);
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .msg.user .msg-content { background: #343541; border-color: transparent; }
+
+    /* ── Options ─────────────────────────────────────────────────── */
+    .options-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .opt-pill {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.5rem 1rem;
+      border-radius: 99px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .opt-pill:hover { border-color: var(--accent); color: var(--accent); background: rgba(16, 163, 127, 0.05); }
+
+    /* ── Input ───────────────────────────────────────────────────── */
+    .input-wrapper {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem;
+      background: linear-gradient(transparent, var(--bg) 50%);
+    }
+    .input-box {
+      max-width: 800px;
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: flex-end;
+      gap: 0.75rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    #userInput {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 1rem;
+      outline: none;
+      resize: none;
+      min-height: 24px;
+      max-height: 200px;
+    }
+    #sendBtn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.5;
+      transition: opacity 0.2s;
+    }
+    #sendBtn.active { opacity: 1; }
+
+    /* ── Results Overlay Panel ─────────────────────────────────── */
+    #intelligenceOverlay {
+      position: fixed;
+      top: 0; right: 0; bottom: 0;
+      width: 500px;
+      background: #171717;
+      border-left: 1px solid var(--border);
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.05, 0.7, 0.1, 1);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      box-shadow: -20px 0 50px rgba(0,0,0,0.5);
+    }
+    #intelligenceOverlay.show { transform: translateX(0); }
+
+    .panel-head { padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
+    .panel-body { flex: 1; overflow-y: auto; padding: 2rem; display: flex; flex-direction: column; gap: 2rem; }
+
+    .report-card { background: #212121; border-radius: 12px; border: 1px solid var(--border); padding: 1.5rem; }
+    .chart-box { background: #000; border-radius: 8px; margin-top: 1rem; overflow: hidden; }
+    .chart-box img { width: 100%; display: block; }
+
+    .verdict-badge { font-weight: 800; font-size: 1.5rem; margin-bottom: 0.5rem; }
+    .verdict-badge.high { color: #f87171; }
+    .verdict-badge.low { color: #4ade80; }
+
+    /* ── Mobile ──────────────────────────────────────────────────── */
+    @media (max-width: 1000px) {
+      aside.sidebar { display: none; }
+      #intelligenceOverlay { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="new-chat" onclick="startNewAnalysis()">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+    New analysis
+  </div>
+  <div class="history-item" onclick="alert('Demo: Current patient data #402')">Recent: Cardiac Intake #402</div>
+  <div class="history-item" onclick="alert('Demo: History record #391')">Recent: Clinical Profile #391</div>
+  <div class="sidebar-footer">explainable.ai v2.0</div>
+</aside>
+
+<main>
+  <header>
+    <div class="branding">explainable.<span>ai</span></div>
+    <div id="panelToggle" style="cursor:pointer; font-size: 0.8rem; font-weight: 600; color: var(--accent); display:none;" onclick="togglePanel(true)">
+      View Raw Data ↗
+    </div>
+  </header>
+
+  <section id="chatViewport" style="scroll-behavior: smooth;">
+    <div class="chat-container" id="chatHistory">
+      <!-- Chat bubbles -->
+    </div>
+  </section>
+
+  <div class="input-wrapper">
+    <div class="input-box">
+      <textarea id="userInput" placeholder="Message explainable.ai..." rows="1"></textarea>
+      <button id="sendBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="intelligenceOverlay">
+    <div class="panel-head">
+      <h3 style="font-size: 0.9rem; font-weight: 800; text-transform: uppercase;">Diagnostic Intelligence</h3>
+      <div style="cursor:pointer" onclick="togglePanel(false)">✕</div>
+    </div>
+    <div class="panel-body" id="analyticsBody">
+      <!-- AI Results Here -->
+    </div>
+  </div>
+</main>
+
+<script>
+  const flow = [
+    { id: 'welcome',  q: "Hello. I am the explainable.ai intelligence engine. I can assist with clinical analysis and diagnostic reasoning. Shall we begin our joint cardiac assessment?", type: 'select', opts: [{l:'Initiate Engine',v:'next'}] },
+    { id: 'age',      q: "Reference patient age in years?", type: 'number', help: "We need this to calibrate the AI's risk baseline for your age group." },
+    { id: 'sex',      q: "Assigned biological sex at birth?", type: 'select', opts: [{l:'Male',v:1},{l:'Female',v:0}], help: "Risk factors often manifest differently in men and women." },
+    { id: 'cp',       q: "Primary chest pain pattern classification?", type: 'select', opts: [{l:'Typical heart pain',v:3},{l:'Atypical discomfort',v:2},{l:'General muscle pain',v:1},{l:'No clear pain',v:0}], help: "We're checking if your pain is related to the heart or just muscle strain." },
+    { id: 'trestbps', q: "Current registered resting blood pressure (mmHg)?", type: 'number', help: "High pressure in your 'pipes' (arteries) can strain your heart over time." },
+    { id: 'chol',     q: "Serum cholesterol concentration (mg/dl)?", type: 'number', help: "Think of this as checking if there's too much 'gunk' in your blood that could cause clogs." },
+    { id: 'fbs',      q: "Is fasting blood glucose level > 120 mg/dl?", type: 'select', opts: [{l:'Confirmed High',v:1},{l:'Normal',v:0}], help: "High blood sugar can make blood 'sticky' and harder to pump." },
+    { id: 'restecg',  q: "Resting electrocardiogram (ECG) baseline?", type: 'select', opts: [{l:'Normal',v:1},{l:'ST-T Abnormality',v:0},{l:'Hypertrophy',v:2}], help: "Checking the 'electrical wiring' of your heart for any glitches." },
+    { id: 'thalach',  q: "Maximum recorded heart rate (BPM)?", type: 'number', help: "Testing how fast your heart's engine can spin when it's working hard." },
+    { id: 'exang',    q: "Exercise-induced angina detected?", type: 'select', opts: [{l:'Yes',v:1},{l:'No',v:0}], help: "Do you feel heart discomfort specifically when you are active?" },
+    { id: 'oldpeak',  q: "Recorded ST depression (Oldpeak)?", type: 'number', help: "This measures how well your heart recovers after exercise." },
+    { id: 'slope',    q: "Peak exercise ST segment slope?", type: 'select', opts: [{l:'Upsloping',v:2},{l:'Flat',v:1},{l:'Downsloping',v:0}], help: "A technical check on the heart's recovery pattern—Upsloping is the healthy goal." },
+    { id: 'ca',       q: "Detected major vessels (0-4) via fluoroscopy?", type: 'select', opts: [{l:'0',v:0},{l:'1',v:1},{l:'2',v:2},{l:'3',v:3},{l:'4',v:4}], help: "Counting how many of your main heart 'highways' are clear of traffic." },
+    { id: 'thal',     q: "Clinical Thalassemia profile?", type: 'select', opts: [{l:'Normal',v:2},{l:'Fixed Defect',v:1},{l:'Reversible Defect',v:3}], help: "Checking your blood's ability to carry oxygen throughout your body." }
+  ];
+
+  let currentStep = 0;
+  let userData = {};
+  let isConsulting = false;
+  let lastReport = null;
+
+  function addMsg(role, text) {
+    const chat = document.getElementById('chatHistory');
+    const viewport = document.getElementById('chatViewport');
+    const step = flow[currentStep];
+    const div = document.createElement('div');
+    div.className = `msg ${role}`;
+    
+    let helpHtml = '';
+    if (role === 'system' && step?.help && step.id !== 'welcome' && !isConsulting) {
+       helpHtml = `<span style="display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:50%; border:1px solid var(--accent); color:var(--accent); font-size:0.65rem; margin-left:8px; cursor:help; vertical-align:middle;" onclick="showHelp('${step.help.replace(/'/g, "\\'")}')" title="What is this?">?</span>`;
+    }
+
+    div.innerHTML = `
+      <div class="avatar">${role === 'system' ? 'E' : 'U'}</div>
+      <div class="msg-content">
+        ${text} ${helpHtml}
+      </div>
+    `;
+    chat.appendChild(div);
+    
+    if (role === 'system' && flow[currentStep]?.opts) {
+      const optsDiv = document.createElement('div');
+      optsDiv.className = 'options-row';
+      flow[currentStep].opts.forEach(o => {
+        const p = document.createElement('button');
+        p.className = 'opt-pill';
+        p.textContent = o.l;
+        p.onclick = () => handleChoice(o.v, o.l);
+        optsDiv.appendChild(p);
+      });
+      div.querySelector('.msg-content').appendChild(optsDiv);
+    }
+
+    // Improved Scrolling
+    setTimeout(() => {
+      viewport.scrollTop = viewport.scrollHeight;
+    }, 100);
+  }
+
+  function handleChoice(val, label) {
+    if(!isConsulting) {
+       addMsg('user', label);
+       if(flow[currentStep].id !== 'welcome') userData[flow[currentStep].id] = val;
+       currentStep++;
+       setTimeout(runStep, 600);
+    }
+  }
+
+  function runStep() {
+    if (currentStep < flow.length) {
+      addMsg('system', flow[currentStep].q);
+    } else {
+      finalize();
+    }
+  }
+
+  async function finalize() {
+    addMsg('system', "Data acquisition complete. Initiating explainable.ai diagnostic verification...");
+    try {
+      const res = await fetch('/predict', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({...userData, model:'rf'})});
+      const data = await res.json();
+      if(data.success) {
+        lastReport = data;
+        isConsulting = true;
+        renderReport(data);
+      }
+    } catch(e) { addMsg('system', "Critical: Connection lost."); }
+  }
+
+  function renderReport(data) {
+    const isHigh = data.predictions.rf.label === 1;
+    const items = data.plain_explanations.slice(0,3).map(f => `<li><strong>${f.label}</strong>: ${f.description}</li>`).join('');
+    
+    const reportHtml = `
+      <div style="margin-top: 1rem;">
+        <div class="verdict-badge ${isHigh?'high':'low'}" style="font-size: 1.2rem;">${isHigh?'CRITICAL RISK DETECTED':'STABLE / LOW RISK'}</div>
+        <div style="font-size: 0.7rem; color: var(--text-muted); font-weight: 700; margin-bottom: 1rem;">DIAGNOSTIC CONFIDENCE: ${data.predictions.rf.prob_high}%</div>
+        
+        <div style="background: rgba(255,255,255,0.03); padding: 1rem; border-radius: 8px; border: 1px solid var(--border);">
+          <h4 style="font-size: 0.7rem; margin-bottom: 0.5rem; color: var(--accent);">KEY DIAGNOSTIC DRIVERS (XAI)</h4>
+          <ul style="font-size: 0.85rem; padding-left: 1rem; color: var(--text-muted); line-height: 1.5">
+            ${items}
+          </ul>
+        </div>
+
+        <div class="chart-box" style="margin-top: 1rem;"><img src="data:image/png;base64,${data.shap_plot}" /></div>
+        <div class="chart-box" style="margin-top: 1rem;"><img src="data:image/png;base64,${data.lime_plot}" /></div>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">Analysis finalized. You may now ask me any questions regarding these specific findings.</p>
+      </div>
+    `;
+    addMsg('system', reportHtml);
+  }
+
+  function togglePanel(s) { document.getElementById('intelligenceOverlay').classList.toggle('show', s); }
+
+  function showHelp(txt) {
+    addMsg('system', `<em>(Citizen Translator):</em> ${txt}`);
+  }
+
+  function startNewAnalysis() {
+    currentStep = 0;
+    userData = {};
+    isConsulting = false;
+    lastReport = null;
+    document.getElementById('chatHistory').innerHTML = '';
+    runStep();
+  }
+
+  const inputEl = document.getElementById('userInput');
+  const btn = document.getElementById('sendBtn');
+  inputEl.oninput = () => btn.classList.toggle('active', inputEl.value.trim() !== "");
+  
+  btn.onclick = () => {
+    const val = inputEl.value.trim();
+    if(!val) return;
+    if(!isConsulting) {
+       const step = flow[currentStep];
+       if(step.type === 'number') {
+          const n = parseFloat(val);
+          if(isNaN(n)) return addMsg('system', "Parameter error. Please enter a valid number.");
+          userData[step.id] = n;
+          addMsg('user', val);
+          currentStep++;
+          setTimeout(runStep, 600);
+       } else {
+          // Handle text answers for non-button steps if any
+          addMsg('user', val);
+          userData[step.id] = val;
+          currentStep++;
+          setTimeout(runStep, 600);
+       }
+    } else {
+       addMsg('user', val);
+       handleConsultationChat(val);
+    }
+    inputEl.value = "";
+    inputEl.style.height = 'auto';
+    btn.classList.remove('active');
+  };
+
+  inputEl.onkeydown = (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      btn.click();
+    }
+  };
+
+  window.onload = () => setTimeout(runStep, 800);
+</script>
+</body>
+</html>
