@@ -1,5 +1,10 @@
 # explainable.ai — Cardiac Risk with Explainable ML
 
+[![tests](https://github.com/sarvesh-raam/explainable.ai/actions/workflows/tests.yml/badge.svg)](https://github.com/sarvesh-raam/explainable.ai/actions/workflows/tests.yml)
+
+**Live demo: https://explainable-ai-nr7p.onrender.com**
+(click *High-risk sample* or *Low-risk sample* for an instant report)
+
 A web app that estimates the probability of coronary heart disease from 13 routine clinical
 measurements, then explains **why** using SHAP. It shows each factor's contribution in
 percentage points, plain-language descriptions, model agreement, what-if scenarios and
@@ -64,22 +69,15 @@ python -m pytest                # run tests
 
 The app ships as a Docker image (`Dockerfile`). It listens on `$PORT` (default 7860) and exposes `/healthz`.
 
-**Hugging Face Spaces (free, recommended):** create a new Space with the *Docker* SDK, then push
-this repository to it. Add this block to the top of the Space's `README.md`:
+**Render (current host, free plan):**
 
-```yaml
----
-title: Explainable AI Cardiac Risk
-emoji: ❤️
-colorFrom: green
-colorTo: gray
-sdk: docker
-app_port: 7860
----
-```
+1. Sign in at [render.com](https://render.com) with GitHub.
+2. New → **Blueprint** → select this repo. `render.yaml` sets up the service on the free plan.
+3. Every push to `main` redeploys automatically.
 
-**Render (free):** New → Blueprint → select this GitHub repo. `render.yaml` configures it.
-Free instances sleep after 15 minutes idle, so the first request takes about a minute.
+Free instances sleep after 15 minutes without traffic. An [UptimeRobot](https://uptimerobot.com) HTTP monitor
+pings `/healthz` every 5 minutes to keep the demo awake. One always-on service fits within Render's
+750 free instance hours per month.
 
 **Any Docker host:**
 
