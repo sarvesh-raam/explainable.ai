@@ -1,0 +1,17 @@
+.git
+.github
+.vscode
+.idea
+__pycache__
+*.pyc
+venv
+.venv
+data
+notebooks
+results
+scratch
+tests
+research paper
+New folder
+*.md
+!README.md

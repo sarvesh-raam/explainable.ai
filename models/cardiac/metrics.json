@@ -1,0 +1,46 @@
+{
+  "n_train": 236,
+  "n_test": 60,
+  "models": {
+    "lr": {
+      "accuracy": 0.8667,
+      "precision": 0.8846,
+      "recall": 0.8214,
+      "f1": 0.8519,
+      "roc_auc": 0.9576,
+      "brier": 0.0883,
+      "cv_auc_mean": 0.8925,
+      "cv_auc_std": 0.0475
+    },
+    "rf": {
+      "accuracy": 0.8667,
+      "precision": 0.8846,
+      "recall": 0.8214,
+      "f1": 0.8519,
+      "roc_auc": 0.9554,
+      "brier": 0.1012,
+      "cv_auc_mean": 0.8952,
+      "cv_auc_std": 0.0277
+    },
+    "xgb": {
+      "accuracy": 0.85,
+      "precision": 0.88,
+      "recall": 0.7857,
+      "f1": 0.8302,
+      "roc_auc": 0.9386,
+      "brier": 0.108,
+      "cv_auc_mean": 0.875,
+      "cv_auc_std": 0.0295
+    }
+  },
+  "ensemble": {
+    "accuracy": 0.85,
+    "roc_auc": 0.9542
+  },
+  "versions": {
+    "python": "3.12.3",
+    "scikit-learn": "1.8.0",
+    "xgboost": "3.2.0",
+    "shap": "0.51.0"
+  }
+}

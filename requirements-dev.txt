@@ -1,0 +1,6 @@
+# Training, research figures and tests
+-r requirements.txt
+lime==0.2.0.1
+matplotlib==3.10.8
+seaborn==0.13.2
+pytest

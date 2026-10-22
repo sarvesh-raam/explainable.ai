@@ -38,3 +38,13 @@ results/plots/
 !results/plots/.gitkeep
 temp/
 *.log
+
+# Tooling
+.venv/
+.pytest_cache/
+
+# Local working files (not part of the app)
+scratch/
+New folder/
+research paper/
+.claude/
